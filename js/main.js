@@ -42,6 +42,15 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
+const LOCATION_RANGE = {
+  latMin: 35.65,
+  latMax: 35.7,
+  lngMin: 139.7,
+  lngMax: 139.8,
+};
+
+const COORDINATOR_PRESITION = 5;
+
 const SIMILAR_ADVERTISEMENTS_COUNT = 10;
 
 const getRandomPositiveInteger = (a, b) => {
@@ -50,9 +59,8 @@ const getRandomPositiveInteger = (a, b) => {
   const result = Math.random() * (upper - lower + 1) + lower;
   return Math.floor(result);
 };
-const getRandomArrayElement = (elements) => {
-  return elements[getRandomPositiveInteger(0, elements.length - 1)];
-};
+
+const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
 
 const getRandomArrayFromDataSet = (dataSet) => {
   const arr = Array.from(dataSet);
@@ -63,37 +71,35 @@ const getRandomArrayFromDataSet = (dataSet) => {
   return result;
 };
 
-// eslint-disable-next-line no-unused-vars
-const createAuthor = (number) => ({
-  avatar: `img/avatars/user${number}.png`
-});
+const createAuthor = (number) => ({ avatar: `img/avatars/user${number.toString().padStart(2, '0')}.png` });
 
-// eslint-disable-next-line no-unused-vars
-const createOffer = (lat) => ({
-  title: 'Заголовок предложения',
-  address: `${lat}, ${lat}`,
-  price: getRandom(1, Infinity),
+const createOffer = (number, lat, lng) => ({
+  title: `Заголовок предложения №${number}`,
+  address: `${lat}, ${lng}`,
+  price: getRandom(1, 100000),
   type: getRandomArrayElement(TYPE_APARTMENTS),
-  rooms: getRandom(1, Infinity),
-  guests: getRandom(1, Infinity),
+  rooms: getRandom(1, 10),
+  guests: getRandom(1, 10),
   checkin: getRandomArrayElement(TIMELINE),
   checkout: getRandomArrayElement(TIMELINE),
-  features: getRandomArrayFromDataSet(FEATURES), //mассив строк — массив случайной длины из значений: wifi, dishwasher, parking, washer, elevator, conditioner. Значения не должны повторяться.
-  description: 'строка — описание помещения. Придумайте самостоятельно',
-  photos: getRandomArrayFromDataSet(PHOTOS), //массив строк — массив случайной длины из значений:
+  features: getRandomArrayFromDataSet(FEATURES),
+  description: `строка — описание помещения №${number}`,
+  photos: getRandomArrayFromDataSet(PHOTOS),
 });
 
-// eslint-disable-next-line no-unused-vars
-const createLocation = () => ({
-  lat: getRandomPre(35.65, 35.7, 5),
-  lng: getRandomPre(139.7, 139.8, 5)
+const createLocation = (lat, lng) => ({
+  lat: lat,
+  lng: lng
 });
 
-const createOfferInfo = (number) => ({
-  author: createAuthor(number),
-  location: createLocation(),
-  offer: createOffer(location.lat),
-});
+const createOfferInfo = (number) => {
+  const lat = getRandomPre(LOCATION_RANGE.latMin, LOCATION_RANGE.latMax, COORDINATOR_PRESITION);
+  const lng = getRandomPre(LOCATION_RANGE.lngMin, LOCATION_RANGE.lngMax, COORDINATOR_PRESITION);
+  return {
+    author: createAuthor(number),
+    offer: createOffer(number, lat, lng),
+    location: createLocation(lat, lng),
+  };
+};
 
-const offerInfos = Array.from({length: SIMILAR_ADVERTISEMENTS_COUNT}, (value, index) => createOfferInfo((index + 1).toString().padStart(2, '0')));
-console.log(offerInfos);
+const offerInfos = Array.from({length: SIMILAR_ADVERTISEMENTS_COUNT}, (value, index) => createOfferInfo(index + 1));
