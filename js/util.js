@@ -1,16 +1,16 @@
-function getRandom(min, max) {
+const getRandom = (min, max) => {
   if (max >= min && min >= 0) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
   return undefined;
-}
+};
 
-function getRandomPre(min, max, precision) {
+const getRandomPre = (min, max, precision) => {
   if (max >= min && min >= 0) {
     return (Math.random() * (max - min) + min).toFixed(precision);
   }
   return undefined;
-}
+};
 
 const getRandomPositiveInteger = (a, b) => {
   const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
@@ -30,7 +30,4 @@ const getRandomArrayFromDataSet = (dataSet) => {
   return result;
 };
 
-export {getRandom};
-export {getRandomPre};
-export {getRandomArrayElement};
-export {getRandomArrayFromDataSet};
+export {getRandom, getRandomPre, getRandomArrayElement, getRandomArrayFromDataSet};
