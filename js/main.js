@@ -1,5 +1,5 @@
 import { offerInfos } from './data.js';
-import { generationCard } from './genCard.js';
+import { generationCard } from './generation-card.js';
 
 const card = generationCard(offerInfos[0]);
 
