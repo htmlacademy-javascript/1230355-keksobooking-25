@@ -1,6 +1,7 @@
-//1.1 Неактивное состояние
+const formSubmission = document.querySelector('.ad-form');
+
 const deactiveForm = () =>{
-  document.querySelector('.ad-form').classList.add('ad-form--disabled');
+  formSubmission.classList.add('ad-form--disabled');
   document.querySelectorAll('.ad-form fieldset').forEach((el) => {
     el.setAttribute('disabled', '');
   });
@@ -11,9 +12,8 @@ const deactiveForm = () =>{
   });
 };
 
-//1.2 Активное состояние
 const activeForm = () => {
-  document.querySelector('.ad-form').classList.remove('ad-form--disabled');
+  formSubmission.classList.remove('ad-form--disabled');
   document.querySelectorAll('.ad-form fieldset').forEach((el) => {
     el.removeAttribute('disabled');
   });
@@ -24,5 +24,39 @@ const activeForm = () => {
   });
 };
 
-export{deactiveForm, activeForm};
+const pristine = new Pristine(formSubmission, {
+  classTo: 'ad-form__element-req',
+  errorTextParent: 'ad-form__element-req',
+  errorTextClass: 'ad-form__label-req__error-text',
 
+  errorClass: 'form__item--invalid',
+  successClass: 'form__item--valid',
+  errorTextTag: 'span'
+});
+
+formSubmission.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+});
+
+const roomsField = formSubmission.querySelector('#room_number');
+const capacityField = formSubmission.querySelector('#capacity');
+const livingOption = {
+  '1': ['1'],
+  '2': ['2', '1'],
+  '3': ['3', '2', '1'],
+  '100': ['0']
+};
+
+function validateRooms () {
+  return livingOption[roomsField.value].includes(capacityField.value);
+}
+
+function getRoomsErrorMessage () {
+  return 'Неподходящее количество гостей';
+}
+
+pristine.addValidator(roomsField, validateRooms, getRoomsErrorMessage);
+
+pristine.addValidator(capacityField, validateRooms, getRoomsErrorMessage);
+
+export{deactiveForm, activeForm};
