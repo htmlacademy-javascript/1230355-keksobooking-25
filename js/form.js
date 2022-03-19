@@ -1,4 +1,3 @@
-//1.1 Неактивное состояние
 const deactiveForm = () =>{
   document.querySelector('.ad-form').classList.add('ad-form--disabled');
   document.querySelectorAll('.ad-form fieldset').forEach((el) => {
@@ -11,7 +10,6 @@ const deactiveForm = () =>{
   });
 };
 
-//1.2 Активное состояние
 const activeForm = () => {
   document.querySelector('.ad-form').classList.remove('ad-form--disabled');
   document.querySelectorAll('.ad-form fieldset').forEach((el) => {
