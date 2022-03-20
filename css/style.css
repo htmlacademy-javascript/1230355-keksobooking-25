@@ -1029,7 +1029,7 @@ fieldset {
   display: none;
 }
 .ad-form__label-req__error-text{
-  color: red;
+  color: #ff2a00;
   display: inline-block;
   padding: 3px 0;
   font-size: 12px;

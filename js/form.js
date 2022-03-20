@@ -46,17 +46,37 @@ const livingOption = {
   '3': ['3', '2', '1'],
   '100': ['0']
 };
-
-function validateRooms () {
-  return livingOption[roomsField.value].includes(capacityField.value);
-}
-
-function getRoomsErrorMessage () {
-  return 'Неподходящее количество гостей';
-}
-
-pristine.addValidator(roomsField, validateRooms, getRoomsErrorMessage);
-
+const validateRooms = () => livingOption[roomsField.value].includes(capacityField.value);
+const getRoomsErrorMessage = () => 'Колличество гостей меньше или равно количеству комнат';
 pristine.addValidator(capacityField, validateRooms, getRoomsErrorMessage);
+// const validateCapacity = () => livingOption[capacityField.value].includes(roomsField.value);
+// const getCapacityErrorMessage = () => 'Колличество комнат больше или равно количеству гостей';
+// pristine.addValidator(roomsField, validateCapacity, getCapacityErrorMessage);
+
+const typeField = formSubmission.querySelector('#type');
+const priceField = formSubmission.querySelector('#price');
+const typePrice = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000
+};
+typeField.addEventListener('change', () => {
+  priceField.placeholder = typePrice[typeField.value];
+  priceField.min = typePrice[typeField.value];
+});
+const validatePrice = () => priceField.value >= typePrice[typeField.value];
+const getPriceErrorMessage = () => `Минимальная цена должна быть больше ${typePrice[typeField.value]}`;
+pristine.addValidator(priceField, validatePrice, getPriceErrorMessage);
+
+const timeInField = formSubmission.querySelector('#timein');
+const timeOutField = formSubmission.querySelector('#timeout');
+timeInField.addEventListener('change', () => {
+  timeOutField.value = timeInField.value;
+});
+timeOutField.addEventListener('change', () => {
+  timeInField.value = timeOutField.value;
+});
 
 export{deactiveForm, activeForm};
