@@ -1,6 +1,5 @@
 const formSubmission = document.querySelector('.ad-form');
-
-const deactiveForm = () =>{
+const deactiveForm = () => {
   formSubmission.classList.add('ad-form--disabled');
   document.querySelectorAll('.ad-form fieldset').forEach((el) => {
     el.setAttribute('disabled', '');
@@ -26,16 +25,17 @@ const activeForm = () => {
 
 const pristine = new Pristine(formSubmission, {
   classTo: 'ad-form__element-req',
-  errorTextParent: 'ad-form__element-req',
-  errorTextClass: 'ad-form__label-req__error-text',
-
   errorClass: 'form__item--invalid',
   successClass: 'form__item--valid',
-  errorTextTag: 'span'
+  errorTextParent: 'ad-form__element-req',
+  errorTextTag: 'span',
+  errorTextClass: 'ad-form__label-req__error-text'
 });
 
 formSubmission.addEventListener('submit', (evt) => {
-  evt.preventDefault();
+  if (!pristine.validate()) {
+    evt.preventDefault();
+  }
 });
 
 const roomsField = formSubmission.querySelector('#room_number');
@@ -47,16 +47,10 @@ const livingOption = {
   '100': ['0']
 };
 
-function validateRooms () {
-  return livingOption[roomsField.value].includes(capacityField.value);
-}
+const validateLiving = () => livingOption[roomsField.value].includes(capacityField.value);
+const getLivingErrorMessage = () => 'Неверное количество гостей';
 
-function getRoomsErrorMessage () {
-  return 'Неподходящее количество гостей';
-}
+pristine.addValidator(roomsField, validateLiving, getLivingErrorMessage);
+pristine.addValidator(capacityField, validateLiving, getLivingErrorMessage);
 
-pristine.addValidator(roomsField, validateRooms, getRoomsErrorMessage);
-
-pristine.addValidator(capacityField, validateRooms, getRoomsErrorMessage);
-
-export{deactiveForm, activeForm};
+export { deactiveForm, activeForm };
