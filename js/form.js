@@ -1,5 +1,4 @@
 const formSubmission = document.querySelector('.ad-form');
-
 const deactiveForm = () =>{
   formSubmission.classList.add('ad-form--disabled');
   document.querySelectorAll('.ad-form fieldset').forEach((el) => {
