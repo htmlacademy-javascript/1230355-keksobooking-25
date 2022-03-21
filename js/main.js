@@ -1,5 +1,5 @@
 import { offerInfos } from './data.js';
-//import { activeForm, deactiveForm } from './form.js';
+import { activeForm, deactiveForm } from './form.js';
 import { generationCard } from './generation-card.js';
 
 //deactiveForm();
