@@ -36,6 +36,7 @@ const pristine = new Pristine(formSubmission, {
 
 formSubmission.addEventListener('submit', (evt) => {
   evt.preventDefault();
+  pristine.validate();
 });
 
 const roomsField = formSubmission.querySelector('#room_number');
@@ -47,16 +48,12 @@ const livingOption = {
   '100': ['0']
 };
 
-function validateRooms () {
-  return livingOption[roomsField.value].includes(capacityField.value);
-}
+const validateLiving = () => livingOption[roomsField.value].includes(capacityField.value);
 
-function getRoomsErrorMessage () {
-  return 'Неподходящее количество гостей';
-}
+const getLivingErrorMessage = () => 'Количество гостей должно быть меньше или равно количесву комнат';
 
-pristine.addValidator(roomsField, validateRooms, getRoomsErrorMessage);
+pristine.addValidator(roomsField, validateLiving, getLivingErrorMessage);
 
-pristine.addValidator(capacityField, validateRooms, getRoomsErrorMessage);
+pristine.addValidator(capacityField, validateLiving, getLivingErrorMessage);
 
 export{deactiveForm, activeForm};
