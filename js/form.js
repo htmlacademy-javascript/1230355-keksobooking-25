@@ -49,9 +49,34 @@ const livingOption = {
 
 const validateLiving = () => livingOption[roomsField.value].includes(capacityField.value);
 const getLivingErrorMessage = () => 'Неверное количество гостей';
-
 pristine.addValidator(roomsField, validateLiving, getLivingErrorMessage);
 pristine.addValidator(capacityField, validateLiving, getLivingErrorMessage);
+
+const typeField = formSubmission.querySelector('#type');
+const priceField = formSubmission.querySelector('#price');
+const typePrice = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000
+};
+typeField.addEventListener('change', () => {
+  priceField.placeholder = typePrice[typeField.value];
+  priceField.min = typePrice[typeField.value];
+});
+const validatePrice = () => priceField.value >= typePrice[typeField.value];
+const getPriceErrorMessage = () => `Минимальная цена должна быть больше ${typePrice[typeField.value]}`;
+pristine.addValidator(priceField, validatePrice, getPriceErrorMessage);
+
+const timeInField = formSubmission.querySelector('#timein');
+const timeOutField = formSubmission.querySelector('#timeout');
+timeInField.addEventListener('change', () => {
+  timeOutField.value = timeInField.value;
+});
+timeOutField.addEventListener('change', () => {
+  timeInField.value = timeOutField.value;
+});
 
 // const sliderElement = document.querySelector('.ad-form__slider');
 // const valueElement = document.querySelector('#price');
