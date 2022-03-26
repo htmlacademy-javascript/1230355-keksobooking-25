@@ -66,7 +66,7 @@ typeField.addEventListener('change', () => {
   priceField.min = typePrice[typeField.value];
 });
 const validatePrice = () => priceField.value >= typePrice[typeField.value];
-const getPriceErrorMessage = () => `Минимальная цена должна быть больше ${typePrice[typeField.value]}`;
+const getPriceErrorMessage = () => `Цена должна быть больше ${typePrice[typeField.value]}`;
 pristine.addValidator(priceField, validatePrice, getPriceErrorMessage);
 
 const timeInField = formSubmission.querySelector('#timein');
@@ -78,35 +78,35 @@ timeOutField.addEventListener('change', () => {
   timeInField.value = timeOutField.value;
 });
 
-// const sliderElement = document.querySelector('.ad-form__slider');
-// const valueElement = document.querySelector('#price');
+const sliderElement = document.querySelector('.ad-form__slider');
+noUiSlider.create(sliderElement, {
+  range: {
+    min: 0,
+    max: 100000,
+  },
+  start: 0,
+  step: 100,
+  connect: 'lower',
+  format: {
+    to: (value) => value.toFixed(0),
+    from: (value) => {
+      if (value < 0) {
+        return 0;
+      } else if (value > 100000) {
+        return 100000;
+      }
+      return value;
+    },
+  },
+});
 
-// noUiSlider.create(sliderElement, {
-//   range: {
-//     min: 0,
-//     max: 100000,
-//   },
-//   start: 0,
-//   step: 1,
-//   connect: 'lower',
-//   format: {
-//     to: function (value) {
-//       if (Number.isInteger(value)) {
-//         return value.toFixed(0);
-//       }
-//       return value.toFixed(1);
-//     },
-//     from: function (value) {
-//       return parseFloat(value);
-//     },
-//   },
-// });
+sliderElement.noUiSlider.on('update', () => {
+  priceField.value = sliderElement.noUiSlider.get();
+  pristine.validate();
+});
 
-// sliderElement.noUiSlider.on('update', () => {
-//   valueElement.value = sliderElement.noUiSlider.get();
-// });
-// // valueElement.addEventListener('input', () => {
-// //   sliderElement.value = valueElement.noUiSlider.get();
-// // });
+priceField.addEventListener('change', () => {
+  sliderElement.noUiSlider.set(priceField.value);
+});
 
 export { deactiveForm, activeForm };
