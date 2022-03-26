@@ -1,6 +1,5 @@
 const formSubmission = document.querySelector('.ad-form');
-
-const deactiveForm = () =>{
+const deactiveForm = () => {
   formSubmission.classList.add('ad-form--disabled');
   document.querySelectorAll('.ad-form fieldset').forEach((el) => {
     el.setAttribute('disabled', '');
@@ -28,14 +27,15 @@ const pristine = new Pristine(formSubmission, {
   classTo: 'ad-form__element-req',
   errorTextParent: 'ad-form__element-req',
   errorTextClass: 'ad-form__label-req__error-text',
-
   errorClass: 'form__item--invalid',
   successClass: 'form__item--valid',
   errorTextTag: 'span'
 });
 
 formSubmission.addEventListener('submit', (evt) => {
-  evt.preventDefault();
+  if (!pristine.validate()) {
+    evt.preventDefault();
+  }
 });
 
 const roomsField = formSubmission.querySelector('#room_number');
@@ -46,9 +46,10 @@ const livingOption = {
   '3': ['3', '2', '1'],
   '100': ['0']
 };
-const validateRooms = () => livingOption[roomsField.value].includes(capacityField.value);
-const getRoomsErrorMessage = () => 'Колличество гостей меньше или равно количеству комнат';
-pristine.addValidator(capacityField, validateRooms, getRoomsErrorMessage);
+
+const validateLiving = () => livingOption[roomsField.value].includes(capacityField.value);
+const getLivingErrorMessage = () => 'Неверное количество гостей';
+pristine.addValidator(capacityField, validateLiving, getLivingErrorMessage);
 // const validateCapacity = () => livingOption[capacityField.value].includes(roomsField.value);
 // const getCapacityErrorMessage = () => 'Колличество комнат больше или равно количеству гостей';
 // pristine.addValidator(roomsField, validateCapacity, getCapacityErrorMessage);
@@ -79,4 +80,4 @@ timeOutField.addEventListener('change', () => {
   timeInField.value = timeOutField.value;
 });
 
-export{deactiveForm, activeForm};
+export { deactiveForm, activeForm };
