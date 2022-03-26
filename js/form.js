@@ -25,11 +25,11 @@ const activeForm = () => {
 
 const pristine = new Pristine(formSubmission, {
   classTo: 'ad-form__element-req',
-  errorTextParent: 'ad-form__element-req',
-  errorTextClass: 'ad-form__label-req__error-text',
   errorClass: 'form__item--invalid',
   successClass: 'form__item--valid',
-  errorTextTag: 'span'
+  errorTextParent: 'ad-form__element-req',
+  errorTextTag: 'span',
+  errorTextClass: 'ad-form__label-req__error-text'
 });
 
 formSubmission.addEventListener('submit', (evt) => {
@@ -49,6 +49,8 @@ const livingOption = {
 
 const validateLiving = () => livingOption[roomsField.value].includes(capacityField.value);
 const getLivingErrorMessage = () => 'Неверное количество гостей';
+pristine.addValidator(roomsField, validateLiving, getLivingErrorMessage);
+pristine.addValidator(capacityField, validateLiving, getLivingErrorMessage);
 
 const typeField = formSubmission.querySelector('#type');
 const priceField = formSubmission.querySelector('#price');
@@ -75,8 +77,5 @@ timeInField.addEventListener('change', () => {
 timeOutField.addEventListener('change', () => {
   timeInField.value = timeOutField.value;
 });
-
-pristine.addValidator(roomsField, validateLiving, getLivingErrorMessage);
-pristine.addValidator(capacityField, validateLiving, getLivingErrorMessage);
 
 export { deactiveForm, activeForm };
