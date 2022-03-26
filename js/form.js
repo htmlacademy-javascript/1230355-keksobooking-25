@@ -1,6 +1,5 @@
 const formSubmission = document.querySelector('.ad-form');
-
-const deactiveForm = () =>{
+const deactiveForm = () => {
   formSubmission.classList.add('ad-form--disabled');
   document.querySelectorAll('.ad-form fieldset').forEach((el) => {
     el.setAttribute('disabled', '');
@@ -26,16 +25,17 @@ const activeForm = () => {
 
 const pristine = new Pristine(formSubmission, {
   classTo: 'ad-form__element-req',
-  errorTextParent: 'ad-form__element-req',
-  errorTextClass: 'ad-form__label-req__error-text',
-
   errorClass: 'form__item--invalid',
   successClass: 'form__item--valid',
-  errorTextTag: 'span'
+  errorTextParent: 'ad-form__element-req',
+  errorTextTag: 'span',
+  errorTextClass: 'ad-form__label-req__error-text'
 });
 
 formSubmission.addEventListener('submit', (evt) => {
-  evt.preventDefault();
+  if (!pristine.validate()) {
+    evt.preventDefault();
+  }
 });
 
 const roomsField = formSubmission.querySelector('#room_number');
@@ -46,38 +46,12 @@ const livingOption = {
   '3': ['3', '2', '1'],
   '100': ['0']
 };
-const validateRooms = () => livingOption[roomsField.value].includes(capacityField.value);
-const getRoomsErrorMessage = () => 'Колличество гостей меньше или равно количеству комнат';
-pristine.addValidator(capacityField, validateRooms, getRoomsErrorMessage);
-// const validateCapacity = () => livingOption[capacityField.value].includes(roomsField.value);
-// const getCapacityErrorMessage = () => 'Колличество комнат больше или равно количеству гостей';
-// pristine.addValidator(roomsField, validateCapacity, getCapacityErrorMessage);
 
-const typeField = formSubmission.querySelector('#type');
-const priceField = formSubmission.querySelector('#price');
-const typePrice = {
-  bungalow: 0,
-  flat: 1000,
-  hotel: 3000,
-  house: 5000,
-  palace: 10000
-};
-typeField.addEventListener('change', () => {
-  priceField.placeholder = typePrice[typeField.value];
-  priceField.min = typePrice[typeField.value];
-});
-const validatePrice = () => priceField.value >= typePrice[typeField.value];
-const getPriceErrorMessage = () => `Минимальная цена должна быть больше ${typePrice[typeField.value]}`;
-pristine.addValidator(priceField, validatePrice, getPriceErrorMessage);
+const validateLiving = () => livingOption[roomsField.value].includes(capacityField.value);
+const getLivingErrorMessage = () => 'Неверное количество гостей';
 
-const timeInField = formSubmission.querySelector('#timein');
-const timeOutField = formSubmission.querySelector('#timeout');
-timeInField.addEventListener('change', () => {
-  timeOutField.value = timeInField.value;
-});
-timeOutField.addEventListener('change', () => {
-  timeInField.value = timeOutField.value;
-});
+pristine.addValidator(roomsField, validateLiving, getLivingErrorMessage);
+pristine.addValidator(capacityField, validateLiving, getLivingErrorMessage);
 
 // const sliderElement = document.querySelector('.ad-form__slider');
 // const valueElement = document.querySelector('#price');
@@ -110,4 +84,4 @@ timeOutField.addEventListener('change', () => {
 // //   sliderElement.value = valueElement.noUiSlider.get();
 // // });
 
-export{deactiveForm, activeForm};
+export { deactiveForm, activeForm };
