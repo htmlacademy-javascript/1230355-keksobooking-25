@@ -1059,3 +1059,15 @@ fieldset {
   padding: 3px 0;
   font-size: 12px;
 }
+.rooms-capacity{
+  display: flex;
+  flex-wrap: wrap;
+  flex-basis: 50%;
+}
+.rooms-capacity .ad-form__element{
+  flex-basis: 50%;
+}
+.rooms-capacity .ad-form__label-req__error-text{
+  position: relative;
+  top: -28px;
+}
