@@ -49,10 +49,6 @@ const livingOption = {
 
 const validateLiving = () => livingOption[roomsField.value].includes(capacityField.value);
 const getLivingErrorMessage = () => 'Неверное количество гостей';
-pristine.addValidator(capacityField, validateLiving, getLivingErrorMessage);
-// const validateCapacity = () => livingOption[capacityField.value].includes(roomsField.value);
-// const getCapacityErrorMessage = () => 'Колличество комнат больше или равно количеству гостей';
-// pristine.addValidator(roomsField, validateCapacity, getCapacityErrorMessage);
 
 const typeField = formSubmission.querySelector('#type');
 const priceField = formSubmission.querySelector('#price');
@@ -79,5 +75,8 @@ timeInField.addEventListener('change', () => {
 timeOutField.addEventListener('change', () => {
   timeInField.value = timeOutField.value;
 });
+
+pristine.addValidator(roomsField, validateLiving, getLivingErrorMessage);
+pristine.addValidator(capacityField, validateLiving, getLivingErrorMessage);
 
 export { deactiveForm, activeForm };
