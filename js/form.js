@@ -25,11 +25,11 @@ const activeForm = () => {
 
 const pristine = new Pristine(formSubmission, {
   classTo: 'ad-form__element-req',
-  errorTextParent: 'ad-form__element-req',
-  errorTextClass: 'ad-form__label-req__error-text',
   errorClass: 'form__item--invalid',
   successClass: 'form__item--valid',
-  errorTextTag: 'span'
+  errorTextParent: 'ad-form__element-req',
+  errorTextTag: 'span',
+  errorTextClass: 'ad-form__label-req__error-text'
 });
 
 formSubmission.addEventListener('submit', (evt) => {
@@ -49,35 +49,8 @@ const livingOption = {
 
 const validateLiving = () => livingOption[roomsField.value].includes(capacityField.value);
 const getLivingErrorMessage = () => 'Неверное количество гостей';
+
+pristine.addValidator(roomsField, validateLiving, getLivingErrorMessage);
 pristine.addValidator(capacityField, validateLiving, getLivingErrorMessage);
-// const validateCapacity = () => livingOption[capacityField.value].includes(roomsField.value);
-// const getCapacityErrorMessage = () => 'Колличество комнат больше или равно количеству гостей';
-// pristine.addValidator(roomsField, validateCapacity, getCapacityErrorMessage);
-
-const typeField = formSubmission.querySelector('#type');
-const priceField = formSubmission.querySelector('#price');
-const typePrice = {
-  bungalow: 0,
-  flat: 1000,
-  hotel: 3000,
-  house: 5000,
-  palace: 10000
-};
-typeField.addEventListener('change', () => {
-  priceField.placeholder = typePrice[typeField.value];
-  priceField.min = typePrice[typeField.value];
-});
-const validatePrice = () => priceField.value >= typePrice[typeField.value];
-const getPriceErrorMessage = () => `Минимальная цена должна быть больше ${typePrice[typeField.value]}`;
-pristine.addValidator(priceField, validatePrice, getPriceErrorMessage);
-
-const timeInField = formSubmission.querySelector('#timein');
-const timeOutField = formSubmission.querySelector('#timeout');
-timeInField.addEventListener('change', () => {
-  timeOutField.value = timeInField.value;
-});
-timeOutField.addEventListener('change', () => {
-  timeInField.value = timeOutField.value;
-});
 
 export { deactiveForm, activeForm };
