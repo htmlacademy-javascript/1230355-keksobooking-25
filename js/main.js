@@ -1,9 +1,8 @@
 import { offerInfos } from './data.js';
 import { activeForm, deactiveForm } from './form.js';
-import { generationCard } from './generation-card.js';
+import { createMap, addSimularOffers } from './map.js';
 
 deactiveForm();
-const card = generationCard(offerInfos[0]);
-const mapContent = document.querySelector('#map-canvas');
-mapContent.appendChild(card);
-activeForm();
+const addressField = document.querySelector('#address');
+const map = createMap('map-canvas', activeForm, addressField);
+addSimularOffers(map, offerInfos);

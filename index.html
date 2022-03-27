@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="leaflet/leaflet.css">
+  <link rel="stylesheet" href="nouislider/nouislider.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <title>Кексобукинг</title>
@@ -67,6 +69,9 @@
         </form>
       </div>
     </section>
+    <section class="map">
+      <!-- <div class="map__canvas" id="map-canvas2"></div> -->
+    </section>
 
     <!-- Форма объявления -->
     <section class="notice">
@@ -110,7 +115,7 @@
           <label class="ad-form__label" for="price">Цена за ночь, руб.</label>
           <input id="price" name="price" type="number" placeholder="5000" required max="100000" min="0"
           data-pristine-required-message="Обязательное поле"
-          data-pristine-max-message="Максимальное знаение 100000">
+          data-pristine-max-message="Цена должна быть меньше 100000">
           <div class="ad-form__slider"></div>
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--time">
@@ -238,6 +243,8 @@
     </div>
   </template>
   <script src="pristine/pristine.min.js"></script>
+  <script src="leaflet/leaflet.js"></script>
+  <script src="nouislider/nouislider.js"></script>
   <script src="js/main.js" type="module"></script>
 </body>
 </html>
