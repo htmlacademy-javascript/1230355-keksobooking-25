@@ -1,11 +1,11 @@
-const getRandom = (min, max) => {
+const getRandomInteger = (min, max) => {
   if (max >= min && min >= 0) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
   return undefined;
 };
 
-const getRandomPre = (min, max, precision) => {
+const getRandomFloat = (min, max, precision) => {
   if (max >= min && min >= 0) {
     return (Math.random() * (max - min) + min).toFixed(precision);
   }
@@ -30,4 +30,4 @@ const getRandomArrayFromDataSet = (dataSet) => {
   return RESULT;
 };
 
-export { getRandom, getRandomPre, getRandomArrayElement, getRandomArrayFromDataSet };
+export { getRandomInteger, getRandomFloat, getRandomArrayElement, getRandomArrayFromDataSet };

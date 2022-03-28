@@ -1,29 +1,10 @@
-const formSubmission = document.querySelector('.ad-form');
-const deactiveForm = () => {
-  formSubmission.classList.add('ad-form--disabled');
-  document.querySelectorAll('.ad-form fieldset').forEach((el) => {
-    el.setAttribute('disabled', '');
-  });
-  document.querySelector('.ad-form__slider').setAttribute('disabled', '');
-  document.querySelector('.map__filters').classList.add('map__filters--disabled');
-  document.querySelectorAll('.map__filters select').forEach((el) => {
-    el.setAttribute('disabled', '');
-  });
-};
+const FORM_SUBMISSION = document.querySelector('.ad-form');
 
-const activeForm = () => {
-  formSubmission.classList.remove('ad-form--disabled');
-  document.querySelectorAll('.ad-form fieldset').forEach((el) => {
-    el.removeAttribute('disabled');
-  });
-  document.querySelector('.ad-form__slider').removeAttribute('disabled');
-  document.querySelector('.map__filters').classList.remove('map__filters--disabled');
-  document.querySelectorAll('.map__filters select').forEach((el) => {
-    el.removeAttribute('disabled');
-  });
-};
+const ROOMS_FIELD = FORM_SUBMISSION.querySelector('#room_number');
 
-const pristine = new window.Pristine(formSubmission, {
+const CAPACITY_FIELD = FORM_SUBMISSION.querySelector('#capacity');
+
+const PRISTINE = new window.Pristine(FORM_SUBMISSION, {
   classTo: 'ad-form__element-req',
   errorClass: 'form__item--invalid',
   successClass: 'form__item--valid',
@@ -32,56 +13,81 @@ const pristine = new window.Pristine(formSubmission, {
   errorTextClass: 'ad-form__label-req__error-text'
 });
 
-formSubmission.addEventListener('submit', (evt) => {
-  if (!pristine.validate()) {
-    evt.preventDefault();
-  }
-});
+const TYPE_FIELD = FORM_SUBMISSION.querySelector('#type');
 
-const roomsField = formSubmission.querySelector('#room_number');
-const capacityField = formSubmission.querySelector('#capacity');
-const livingOption = {
+const PRICE_FIELD = FORM_SUBMISSION.querySelector('#price');
+
+const TIME_IN_FIELD = FORM_SUBMISSION.querySelector('#timein');
+
+const TIME_OUT_FIELD = FORM_SUBMISSION.querySelector('#timeout');
+
+const SLIDER_ELEMENT = FORM_SUBMISSION.querySelector('.ad-form__slider');
+
+const TypePrice = {
+  BUNGALOW: 0,
+  FLAT: 1000,
+  HOTEL: 3000,
+  HOUSE: 5000,
+  PALACE: 10000
+};
+
+const LivingOption = {
   '1': ['1'],
   '2': ['2', '1'],
   '3': ['3', '2', '1'],
   '100': ['0']
 };
 
-const validateLiving = () => livingOption[roomsField.value].includes(capacityField.value);
-const getLivingErrorMessage = () => 'Неверное количество гостей';
-pristine.addValidator(roomsField, validateLiving, getLivingErrorMessage);
-pristine.addValidator(capacityField, validateLiving, getLivingErrorMessage);
-
-
-const typeField = formSubmission.querySelector('#type');
-const priceField = formSubmission.querySelector('#price');
-const typePrice = {
-  bungalow: 0,
-  flat: 1000,
-  hotel: 3000,
-  house: 5000,
-  palace: 10000
+const disableForm = () => {
+  FORM_SUBMISSION.classList.add('ad-form--disabled');
+  document.querySelectorAll('.ad-form fieldset').forEach((el) => el.setAttribute('disabled', ''));
+  document.querySelector('.ad-form__slider').setAttribute('disabled', '');
+  document.querySelector('.map__filters').classList.add('map__filters--disabled');
+  document.querySelectorAll('.map__filters select').forEach((el) => el.setAttribute('disabled', ''));
 };
-typeField.addEventListener('change', () => {
-  priceField.placeholder = typePrice[typeField.value];
-  priceField.min = typePrice[typeField.value];
-});
-const validatePrice = () => priceField.value >= typePrice[typeField.value];
-const getPriceErrorMessage = () => `Цена должна быть больше ${typePrice[typeField.value]}`;
-pristine.addValidator(priceField, validatePrice, getPriceErrorMessage);
 
-const timeInField = formSubmission.querySelector('#timein');
-const timeOutField = formSubmission.querySelector('#timeout');
-timeInField.addEventListener('change', () => {
-  timeOutField.value = timeInField.value;
-});
-timeOutField.addEventListener('change', () => {
-  timeInField.value = timeOutField.value;
+const enableForm = () => {
+  FORM_SUBMISSION.classList.remove('ad-form--disabled');
+  document.querySelectorAll('.ad-form fieldset').forEach((el) => el.removeAttribute('disabled'));
+  document.querySelector('.ad-form__slider').removeAttribute('disabled');
+  document.querySelector('.map__filters').classList.remove('map__filters--disabled');
+  document.querySelectorAll('.map__filters select').forEach((el) => el.removeAttribute('disabled'));
+};
+
+FORM_SUBMISSION.addEventListener('submit', (evt) => {
+  if (!PRISTINE.validate()) {
+    evt.preventDefault();
+  }
 });
 
+const validateLiving = () => LivingOption[ROOMS_FIELD.value].includes(CAPACITY_FIELD.value);
 
-const sliderElement = document.querySelector('.ad-form__slider');
-noUiSlider.create(sliderElement, {
+const getLivingErrorMessage = () => 'Неверное количество гостей';
+
+PRISTINE.addValidator(ROOMS_FIELD, validateLiving, getLivingErrorMessage);
+
+PRISTINE.addValidator(CAPACITY_FIELD, validateLiving, getLivingErrorMessage);
+
+TYPE_FIELD.addEventListener('change', () => {
+  PRICE_FIELD.placeholder = TypePrice[TYPE_FIELD.value];
+  PRICE_FIELD.min = TypePrice[TYPE_FIELD.value];
+});
+
+const validatePrice = () => PRICE_FIELD.value >= TypePrice[TYPE_FIELD.value];
+
+const getPriceErrorMessage = () => `Цена должна быть больше ${TypePrice[TYPE_FIELD.value]}`;
+
+PRISTINE.addValidator(PRICE_FIELD, validatePrice, getPriceErrorMessage);
+
+TIME_IN_FIELD.addEventListener('change', () => {
+  TIME_OUT_FIELD.value = TIME_IN_FIELD.value;
+});
+
+TIME_OUT_FIELD.addEventListener('change', () => {
+  TIME_IN_FIELD.value = TIME_OUT_FIELD.value;
+});
+
+noUiSlider.create(SLIDER_ELEMENT, {
   range: {
     min: 0,
     max: 100000,
@@ -102,13 +108,13 @@ noUiSlider.create(sliderElement, {
   },
 });
 
-sliderElement.noUiSlider.on('update', () => {
-  priceField.value = sliderElement.noUiSlider.get();
-  pristine.validate();
+SLIDER_ELEMENT.noUiSlider.on('update', () => {
+  PRICE_FIELD.value = SLIDER_ELEMENT.noUiSlider.get();
+  PRISTINE.validate();
 });
 
-priceField.addEventListener('change', () => {
-  sliderElement.noUiSlider.set(priceField.value);
+PRICE_FIELD.addEventListener('change', () => {
+  SLIDER_ELEMENT.noUiSlider.set(PRICE_FIELD.value);
 });
 
-export { deactiveForm, activeForm };
+export { disableForm, enableForm };
