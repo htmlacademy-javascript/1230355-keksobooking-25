@@ -52,6 +52,7 @@ const getLivingErrorMessage = () => 'Неверное количество го�
 pristine.addValidator(roomsField, validateLiving, getLivingErrorMessage);
 pristine.addValidator(capacityField, validateLiving, getLivingErrorMessage);
 
+
 const typeField = formSubmission.querySelector('#type');
 const priceField = formSubmission.querySelector('#price');
 const typePrice = {
@@ -77,6 +78,7 @@ timeInField.addEventListener('change', () => {
 timeOutField.addEventListener('change', () => {
   timeInField.value = timeOutField.value;
 });
+
 
 const sliderElement = document.querySelector('.ad-form__slider');
 noUiSlider.create(sliderElement, {
