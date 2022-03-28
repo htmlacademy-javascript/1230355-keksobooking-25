@@ -23,7 +23,7 @@ const activeForm = () => {
   });
 };
 
-const pristine = new Pristine(formSubmission, {
+const pristine = new window.Pristine(formSubmission, {
   classTo: 'ad-form__element-req',
   errorClass: 'form__item--invalid',
   successClass: 'form__item--valid',
