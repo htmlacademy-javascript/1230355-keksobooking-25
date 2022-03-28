@@ -1,15 +1,38 @@
-import { generationCard } from './generation-card.js';
+import { generateCard } from './generation-card.js';
 
 const COORDINATOR_PRESITION = 5;
+
+const MAIN_PIN_ICON = L.icon({
+  iconUrl: './img/main-pin.svg',
+  iconSize: [52, 52],
+  iconAnchor: [26, 52],
+});
+
+const MAIN_PIN_MARKER = L.marker(
+  {
+    lat: 35.685,
+    lng: 139.753,
+  },
+  {
+    draggable: true,
+    icon: MAIN_PIN_ICON,
+  },
+);
+
+const ADDITIONAL_ICON = L.icon({
+  iconUrl: './img/pin.svg',
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+});
 
 const setAddress = (addressField, latLng) => {
   addressField.setAttribute('value', `${latLng.lat.toFixed(COORDINATOR_PRESITION)}, ${latLng.lng.toFixed(COORDINATOR_PRESITION)}`);
 };
 
 const createMap = (elementId, afterLoadAction, addressField) => {
-  const map = L.map(elementId);
-  map.on('load', () => afterLoadAction());
-  map.setView({
+  const MAP = L.map(elementId);
+  MAP.on('load', () => afterLoadAction());
+  MAP.setView({
     lat: 35.685,
     lng: 139.753,
   }, 13);
@@ -19,41 +42,20 @@ const createMap = (elementId, afterLoadAction, addressField) => {
     {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     },
-  ).addTo(map);
+  ).addTo(MAP);
 
-  const mainPinIcon = L.icon({
-    iconUrl: './img/main-pin.svg',
-    iconSize: [52, 52],
-    iconAnchor: [26, 52],
-  });
+  MAIN_PIN_MARKER.addTo(MAP);
 
-  const mainPinMarker = L.marker(
-    {
-      lat: 35.685,
-      lng: 139.753,
-    },
-    {
-      draggable: true,
-      icon: mainPinIcon,
-    },
-  );
-  mainPinMarker.addTo(map);
-  setAddress(addressField, mainPinMarker.getLatLng());
+  setAddress(addressField, MAIN_PIN_MARKER.getLatLng());
 
-  mainPinMarker.on('moveend', (evt) => {
+  MAIN_PIN_MARKER.on('moveend', (evt) => {
     setAddress(addressField, evt.target.getLatLng());
   });
 
-  return map;
+  return MAP;
 };
 
 const addSimularOffers = (map, offerInfos) => {
-  const icon = L.icon({
-    iconUrl: './img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-  });
-
   offerInfos.forEach((offerInfo) => {
     const { lat, lng } = offerInfo.location;
     const marker = L.marker(
@@ -62,13 +64,13 @@ const addSimularOffers = (map, offerInfos) => {
         lng,
       },
       {
-        icon,
+        icon: ADDITIONAL_ICON,
       },
     );
 
     marker
       .addTo(map)
-      .bindPopup(generationCard(offerInfo));
+      .bindPopup(generateCard(offerInfo));
   });
 };
 

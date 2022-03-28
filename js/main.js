@@ -1,8 +1,8 @@
-import { offerInfos } from './data.js';
-import { activeForm, deactiveForm } from './form.js';
+import { OFFER_INFOS } from './data.js';
+import { disableForm, enableForm } from './form.js';
 import { createMap, addSimularOffers } from './map.js';
 
-deactiveForm();
+disableForm();
 const addressField = document.querySelector('#address');
-const map = createMap('map-canvas', activeForm, addressField);
-addSimularOffers(map, offerInfos);
+const map = createMap('map-canvas', enableForm, addressField);
+addSimularOffers(map, OFFER_INFOS);

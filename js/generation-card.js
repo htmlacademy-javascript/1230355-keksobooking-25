@@ -1,23 +1,23 @@
-const similarCardTemplate = document.querySelector('#card').content.querySelector('.popup');
+const SIMILAR_CARD_TEMPLATE = document.querySelector('#card').content.querySelector('.popup');
 
-const typeApartments = {
-  flat: 'Квартира',
-  bungalow: 'Бунгало',
-  house: 'Дом',
-  palace: 'Дворец',
-  hotel: 'Отель',
+const TypeApartmentsValue = {
+  FLAT: 'Квартира',
+  BUNGALOW: 'Бунгало',
+  HOUSE: 'Дом',
+  PALACE: 'Дворец',
+  HOTEL: 'Отель',
 };
 
 const checkFieldData = (data) => data !== undefined && data.toString().length > 0;
 
-const unvisibleField = (field) => field.classList.add('hidden');
+const hideField = (field) => field.classList.add('hidden');
 
 const renderTitle = (titleContent, title) => {
   titleContent.textContent = '';
   if (checkFieldData(title)) {
     titleContent.textContent = title;
   } else {
-    unvisibleField(titleContent);
+    hideField(titleContent);
   }
 };
 
@@ -26,7 +26,7 @@ const renderAddress = (addressContent, address) => {
   if (checkFieldData(address)) {
     addressContent.textContent = address;
   } else {
-    unvisibleField(addressContent);
+    hideField(addressContent);
   }
 };
 
@@ -38,7 +38,7 @@ const renderPrice = (priceContent, price) => {
     priceUnit.textContent = '₽/ночь';
     priceContent.appendChild(priceUnit);
   } else {
-    unvisibleField(priceContent);
+    hideField(priceContent);
   }
 };
 
@@ -47,7 +47,7 @@ const renderPopupType = (popupTypeContent, popupType) => {
   if (checkFieldData(popupType)) {
     popupTypeContent.textContent = popupType;
   } else {
-    unvisibleField(popupTypeContent);
+    hideField(popupTypeContent);
   }
 };
 
@@ -56,7 +56,7 @@ const renderCapacity = (capacityContent, rooms, guests) => {
   if (checkFieldData(rooms) && checkFieldData(guests)) {
     capacityContent.textContent = `${rooms} комнаты для ${guests} гостей`;
   } else {
-    unvisibleField(capacityContent);
+    hideField(capacityContent);
   }
 };
 
@@ -65,7 +65,7 @@ const renderTime = (timeContent, checkin, checkout) => {
   if (checkFieldData(checkin) && checkFieldData(checkout)) {
     timeContent.textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
   } else {
-    unvisibleField(timeContent);
+    hideField(timeContent);
   }
 };
 
@@ -80,7 +80,7 @@ const renderFeatures = (place, features) => {
   if (checkFieldData(features)) {
     features.forEach((feature) => place.appendChild(createFeaturesLi(feature)));
   } else {
-    unvisibleField(place);
+    hideField(place);
   }
 };
 
@@ -89,7 +89,7 @@ const renderDescription = (descriptionContent, description) => {
   if (checkFieldData(description)) {
     descriptionContent.textContent = description;
   } else {
-    unvisibleField(descriptionContent);
+    hideField(descriptionContent);
   }
 };
 
@@ -108,7 +108,7 @@ const renderPhotos = (place, photos) => {
   if (checkFieldData(photos)) {
     photos.forEach((photoSrc) => place.appendChild(createPhotoImg(photoSrc)));
   } else {
-    unvisibleField(place);
+    hideField(place);
   }
 };
 
@@ -117,7 +117,7 @@ const renderAvatar = (avatarContent, avatar) => {
   if (checkFieldData(avatar)) {
     avatarContent.src = avatar;
   } else {
-    unvisibleField(avatarContent);
+    hideField(avatarContent);
   }
 };
 
@@ -125,7 +125,7 @@ const renderCard = (card, data) => {
   renderTitle(card.querySelector('.popup__title'), data.offer.title);
   renderAddress(card.querySelector('.popup__text--address'), data.offer.address);
   renderPrice(card.querySelector('.popup__text--price'), data.offer.price);
-  renderPopupType(card.querySelector('.popup__type'), typeApartments[data.offer.type]);
+  renderPopupType(card.querySelector('.popup__type'), TypeApartmentsValue[data.offer.type]);
   renderCapacity(card.querySelector('.popup__text--capacity'), data.offer.rooms, data.offer.guests);
   renderTime(card.querySelector('.popup__text--time'), data.offer.checkin, data.offer.checkout);
   renderFeatures(card.querySelector('.popup__features'), data.offer.features);
@@ -134,10 +134,10 @@ const renderCard = (card, data) => {
   renderAvatar(card.querySelector('.popup__avatar'), data.author.avatar);
 };
 
-const generationCard = (data) => {
-  const card = similarCardTemplate.cloneNode(true);
+const generateCard = (data) => {
+  const card = SIMILAR_CARD_TEMPLATE.cloneNode(true);
   renderCard(card, data);
   return card;
 };
 
-export { generationCard };
+export { generateCard };
