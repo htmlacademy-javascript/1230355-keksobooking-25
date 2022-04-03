@@ -1,3 +1,5 @@
+import { sendOffer } from './api.js';
+import { resetMarker } from './map.js';
 const FORM_SUBMISSION = document.querySelector('.ad-form');
 
 const ROOMS_FIELD = FORM_SUBMISSION.querySelector('#room_number');
@@ -24,11 +26,11 @@ const TIME_OUT_FIELD = FORM_SUBMISSION.querySelector('#timeout');
 const SLIDER_ELEMENT = FORM_SUBMISSION.querySelector('.ad-form__slider');
 
 const TypePrice = {
-  BUNGALOW: 0,
-  FLAT: 1000,
-  HOTEL: 3000,
-  HOUSE: 5000,
-  PALACE: 10000
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000
 };
 
 const LivingOption = {
@@ -54,11 +56,57 @@ const enableForm = () => {
   document.querySelectorAll('.map__filters select').forEach((el) => el.removeAttribute('disabled'));
 };
 
-FORM_SUBMISSION.addEventListener('submit', (evt) => {
-  if (!PRISTINE.validate()) {
+const submitButton = FORM_SUBMISSION.querySelector('.ad-form__submit');
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Публикую...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+const resetBtn = document.querySelector('.ad-form__reset');
+const avatar = document.querySelector('#avatar');
+const avatarImg = document.querySelector('.ad-form-header__preview img');
+const photos = document.querySelector('#images');
+const address = document.querySelector('#address');
+
+const resetForm = () => {
+  FORM_SUBMISSION.reset();
+  avatar.files.value = 'img/muffin-grey.svg';
+  avatarImg.src = 'img/muffin-grey.svg';
+  photos.files.value = '';
+  const userPhotos = document.querySelectorAll('.photo');
+  userPhotos.forEach((element) => element.remove());
+  resetMarker(address);
+};
+
+resetBtn.addEventListener('click', resetForm);
+
+const setUserFormSubmit = (onSuccess, onFail) => {
+  FORM_SUBMISSION.addEventListener('submit', (evt) => {
     evt.preventDefault();
-  }
-});
+
+    const isValid = PRISTINE.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendOffer(
+        () => {
+          onSuccess();
+          unblockSubmitButton();
+        },
+        () => {
+          onFail();
+          unblockSubmitButton();
+        },
+        new FormData(evt.target),
+      );
+    }
+  });
+};
 
 const validateLiving = () => LivingOption[ROOMS_FIELD.value].includes(CAPACITY_FIELD.value);
 
@@ -117,4 +165,4 @@ PRICE_FIELD.addEventListener('change', () => {
   SLIDER_ELEMENT.noUiSlider.set(PRICE_FIELD.value);
 });
 
-export { disableForm, enableForm };
+export { disableForm, enableForm, setUserFormSubmit, resetForm };
