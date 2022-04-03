@@ -55,7 +55,7 @@ const createMap = (elementId, afterLoadAction, addressField) => {
   return MAP;
 };
 
-const addSimularOffers = (map, offerInfos) => {
+const addSimilarOffers = (map, offerInfos) => {
   offerInfos.forEach((offerInfo) => {
     const { lat, lng } = offerInfo.location;
     const marker = L.marker(
@@ -74,4 +74,12 @@ const addSimularOffers = (map, offerInfos) => {
   });
 };
 
-export { createMap, addSimularOffers };
+const resetMarker = (addressField) => {
+  MAIN_PIN_MARKER.setLatLng({
+    lat: 35.685,
+    lng: 139.753,
+  });
+  setAddress(addressField, MAIN_PIN_MARKER.getLatLng());
+};
+
+export { createMap, addSimilarOffers, resetMarker };

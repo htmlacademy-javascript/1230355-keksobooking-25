@@ -1,8 +1,17 @@
-import { OFFER_INFOS } from './data.js';
-import { disableForm, enableForm } from './form.js';
-import { createMap, addSimularOffers } from './map.js';
+import { disableForm, enableForm, setUserFormSubmit } from './form.js';
+import { createMap, addSimilarOffers } from './map.js';
+import { successPopup, errorPopup } from './user-modal.js';
+import { fetchSimilarOffers } from './api.js';
+import { renderErrorFullScreen } from './error-template.js';
+
 
 disableForm();
 const addressField = document.querySelector('#address');
 const map = createMap('map-canvas', enableForm, addressField);
-addSimularOffers(map, OFFER_INFOS);
+const OFFERS_COUNT = 10;
+fetchSimilarOffers(
+  (offerInfos) => addSimilarOffers(map, offerInfos.slice(0, OFFERS_COUNT)),
+  () => renderErrorFullScreen('Ошибка загрузки данных с сервера')
+);
+
+setUserFormSubmit(successPopup, errorPopup);

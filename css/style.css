@@ -1073,3 +1073,20 @@ fieldset {
   position: relative;
   top: -28px;
 }
+.error-mess {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  padding: 10px 3px;
+  font-size: 30px;
+  text-align: center;
+  background-color: rgb(185, 33, 33);
+  z-index: 1000;
+}
