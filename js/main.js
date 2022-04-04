@@ -3,7 +3,7 @@ import { createMap, addSimilarOffers } from './map.js';
 import { successPopup, errorPopup } from './user-modal.js';
 import { fetchSimilarOffers } from './api.js';
 import { renderErrorFullScreen } from './error-template.js';
-
+import './avatar.js';
 
 disableForm();
 const addressField = document.querySelector('#address');
