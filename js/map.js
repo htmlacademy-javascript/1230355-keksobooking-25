@@ -1,4 +1,5 @@
 import { generateCard } from './generation-card.js';
+import { filterByAll, getSelectedFeatures } from './map-filter.js';
 
 const COORDINATOR_PRESITION = 5;
 
@@ -24,6 +25,8 @@ const ADDITIONAL_ICON = L.icon({
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
+
+const OFFERS_COUNT = 10;
 
 const setAddress = (addressField, latLng) => {
   addressField.setAttribute('value', `${latLng.lat.toFixed(COORDINATOR_PRESITION)}, ${latLng.lng.toFixed(COORDINATOR_PRESITION)}`);
@@ -55,23 +58,29 @@ const createMap = (elementId, afterLoadAction, addressField) => {
   return MAP;
 };
 
-const addSimilarOffers = (map, offerInfos) => {
-  offerInfos.forEach((offerInfo) => {
-    const { lat, lng } = offerInfo.location;
-    const marker = L.marker(
-      {
-        lat,
-        lng,
-      },
-      {
-        icon: ADDITIONAL_ICON,
-      },
-    );
+const addSimilarOffers = (layer, offerInfos) => {
+  layer.clearLayers();
+  const selectedFeatures = getSelectedFeatures();
 
-    marker
-      .addTo(map)
-      .bindPopup(generateCard(offerInfo));
-  });
+  offerInfos
+    .filter((offerInfo) => filterByAll(offerInfo, selectedFeatures))
+    .slice(0, OFFERS_COUNT)
+    .forEach((offerInfo) => {
+      const { lat, lng } = offerInfo.location;
+      const marker = L.marker(
+        {
+          lat,
+          lng,
+        },
+        {
+          icon: ADDITIONAL_ICON,
+        },
+      );
+
+      marker
+        .addTo(layer)
+        .bindPopup(generateCard(offerInfo));
+    });
 };
 
 const resetMarker = (addressField) => {

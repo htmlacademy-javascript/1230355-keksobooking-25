@@ -604,7 +604,7 @@ fieldset {
   margin-bottom: 10px;
 
   width: 70px;
-  height: 210px;
+  min-height: 70px;
 
   background-color: #e4e4de;
   border-radius: 5px;
