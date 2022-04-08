@@ -23,9 +23,13 @@ export const enableFilter = (loadedSimilarOffers) => {
 };
 
 export const resetFilters = () => {
-  housingMapFilterSelects.forEach((el) => el.value = 'any');
+  housingMapFilterSelects.forEach((el) => {
+    el.value = 'any';
+  });
   const features = housingMapFiltersFieldset.querySelectorAll('[name="features"]');
-  features.forEach((el) => el.checked = false);
+  features.forEach((el) => {
+    el.checked = false;
+  });
 };
 
 export const setFilterChange = (action) => {
