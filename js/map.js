@@ -1,44 +1,42 @@
 import { generateCard } from './generation-card.js';
 import { filterByAll, getSelectedFeatures } from './map-filter.js';
 
-const COORDINATOR_PRESITION = 5;
+const COORDINATE_PRESITION = 5;
+const MAP_ZOOM = 13;
+const DEFAULT_COORDINATES = {
+  lat: 35.685,
+  lng: 139.753
+};
+const SIMILAR_OFFERS_MAX_NUMBER = 10;
 
-const MAIN_PIN_ICON = L.icon({
+const mainMarkerIcon = L.icon({
   iconUrl: './img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
 
-const MAIN_PIN_MARKER = L.marker(
-  {
-    lat: 35.685,
-    lng: 139.753,
-  },
+const mainMarker = L.marker(
+  DEFAULT_COORDINATES,
   {
     draggable: true,
-    icon: MAIN_PIN_ICON,
+    icon: mainMarkerIcon,
   },
 );
 
-const ADDITIONAL_ICON = L.icon({
+const similarOfferMarkerIcon = L.icon({
   iconUrl: './img/pin.svg',
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
 
-const OFFERS_COUNT = 10;
-
-const setAddress = (addressField, latLng) => {
-  addressField.setAttribute('value', `${latLng.lat.toFixed(COORDINATOR_PRESITION)}, ${latLng.lng.toFixed(COORDINATOR_PRESITION)}`);
+const setAddress = (addressElement, location) => {
+  addressElement.setAttribute('value', `${location.lat.toFixed(COORDINATE_PRESITION)}, ${location.lng.toFixed(COORDINATE_PRESITION)}`);
 };
 
-const createMap = (elementId, afterLoadAction, addressField) => {
-  const MAP = L.map(elementId);
-  MAP.on('load', () => afterLoadAction());
-  MAP.setView({
-    lat: 35.685,
-    lng: 139.753,
-  }, 13);
+const createMap = (mapElementId, onLoad, addressElement) => {
+  const MAP = L.map(mapElementId)
+    .on('load', () => onLoad())
+    .setView(DEFAULT_COORDINATES, MAP_ZOOM);
 
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -47,12 +45,12 @@ const createMap = (elementId, afterLoadAction, addressField) => {
     },
   ).addTo(MAP);
 
-  MAIN_PIN_MARKER.addTo(MAP);
+  mainMarker.addTo(MAP);
 
-  setAddress(addressField, MAIN_PIN_MARKER.getLatLng());
+  setAddress(addressElement, mainMarker.getLatLng());
 
-  MAIN_PIN_MARKER.on('moveend', (evt) => {
-    setAddress(addressField, evt.target.getLatLng());
+  mainMarker.on('moveend', (evt) => {
+    setAddress(addressElement, evt.target.getLatLng());
   });
 
   return MAP;
@@ -64,16 +62,12 @@ const addSimilarOffers = (layer, offerInfos) => {
 
   offerInfos
     .filter((offerInfo) => filterByAll(offerInfo, selectedFeatures))
-    .slice(0, OFFERS_COUNT)
+    .slice(0, SIMILAR_OFFERS_MAX_NUMBER)
     .forEach((offerInfo) => {
-      const { lat, lng } = offerInfo.location;
       const marker = L.marker(
+        offerInfo.location,
         {
-          lat,
-          lng,
-        },
-        {
-          icon: ADDITIONAL_ICON,
+          icon: similarOfferMarkerIcon,
         },
       );
 
@@ -82,13 +76,13 @@ const addSimilarOffers = (layer, offerInfos) => {
         .bindPopup(generateCard(offerInfo));
     });
 };
-
-const resetMarker = (addressField) => {
-  MAIN_PIN_MARKER.setLatLng({
-    lat: 35.685,
-    lng: 139.753,
-  });
-  setAddress(addressField, MAIN_PIN_MARKER.getLatLng());
+const resetMainMarker = (addressElement) => {
+  mainMarker.setLatLng(DEFAULT_COORDINATES);
+  setAddress(addressElement, mainMarker.getLatLng());
 };
 
-export { createMap, addSimilarOffers, resetMarker };
+const resetMap = (addressElement) => {
+  resetMainMarker(addressElement);
+};
+
+export { createMap, addSimilarOffers, resetMap };

@@ -4,21 +4,32 @@ const housingRoomsElement = document.querySelector('#housing-rooms');
 const housingGuestsElement = document.querySelector('#housing-guests');
 const housingFeaturesElement = document.querySelector('#housing-features');
 const housingFeaturesCheckBoxes = housingFeaturesElement.querySelectorAll('.map__checkbox');
+const housingMapFilters = document.querySelector('.map__filters');
+const housingMapFilterSelects = housingMapFilters.querySelectorAll('select');
+const housingMapFiltersFieldset = housingMapFilters.querySelector('#housing-features');
 
 export const disableFilter = () => {
-  document.querySelector('.map__filters').classList.add('map__filters--disabled');
-  document.querySelectorAll('.map__filters select').forEach((el) => el.setAttribute('disabled', ''));
+  housingMapFilters.classList.add('map__filters--disabled');
+  housingMapFilterSelects.forEach((el) => el.setAttribute('disabled', ''));
+  housingMapFiltersFieldset.setAttribute('disabled', '');
 };
 
 export const enableFilter = (loadedSimilarOffers) => {
-  if(loadedSimilarOffers) {
-    document.querySelector('.map__filters').classList.remove('map__filters--disabled');
-    document.querySelectorAll('.map__filters select').forEach((el) => el.removeAttribute('disabled'));
+  if (loadedSimilarOffers) {
+    housingMapFilters.classList.remove('map__filters--disabled');
+    housingMapFilterSelects.forEach((el) => el.removeAttribute('disabled'));
+    housingMapFiltersFieldset.removeAttribute('disabled');
   }
 };
 
+export const resetFilters = () => {
+  housingMapFilterSelects.forEach((el) => el.value = 'any');
+  const features = housingMapFiltersFieldset.querySelectorAll('[name="features"]');
+  features.forEach((el) => el.checked = false);
+};
+
 export const setFilterChange = (action) => {
-  [...document.querySelector('.map__filters').children].forEach((filterElement) => filterElement.addEventListener('change', () => action()));
+  [...housingMapFilters.children].forEach((filterElement) => filterElement.addEventListener('change', () => action()));
 };
 
 export const filterByType = (currentType) => housingTypeElement.value === 'any' || currentType === housingTypeElement.value;
@@ -63,10 +74,10 @@ export const filterByGuests = (currentGuests) => {
 };
 
 export const filterByFeatures = (currentFeatures, selectedFeatures) => {
-  if(selectedFeatures.length === 0) {
+  if (selectedFeatures.length === 0) {
     return true;
   }
-  if(currentFeatures === undefined) {
+  if (currentFeatures === undefined) {
     return false;
   }
 
@@ -76,7 +87,7 @@ export const filterByFeatures = (currentFeatures, selectedFeatures) => {
 export const getSelectedFeatures = () => {
   const selectedFeatures = [];
   housingFeaturesCheckBoxes.forEach((housingFeaterCheckBox) => {
-    if(housingFeaterCheckBox.checked) {
+    if (housingFeaterCheckBox.checked) {
       selectedFeatures.push(housingFeaterCheckBox.value);
     }
   });
