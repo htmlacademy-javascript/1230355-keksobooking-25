@@ -92,8 +92,10 @@ const setOfferFormSubmit = (onSuccess, onFail) => {
 
 const validateLiving = () => LivingOption[roomNumberElement.value].includes(capacityElement.value);
 const getLivingErrorMessage = () => 'Неверное количество гостей';
-pristine.addValidator(roomNumberElement, validateLiving, getLivingErrorMessage);
 pristine.addValidator(capacityElement, validateLiving, getLivingErrorMessage);
+roomNumberElement.addEventListener('change', () => {
+  pristine.validate(capacityElement);
+});
 
 const validatePrice = () => priceElement.value >= TypePrice[typeElement.value];
 const getPriceErrorMessage = () => `Цена должна быть больше ${TypePrice[typeElement.value]}`;
