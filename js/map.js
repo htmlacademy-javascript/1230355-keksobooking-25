@@ -81,7 +81,9 @@ const resetMainMarker = (addressElement) => {
   setAddress(addressElement, mainMarker.getLatLng());
 };
 
-const resetMap = (addressElement) => {
+const resetMap = (map, addressElement) => {
+  map.setView(DEFAULT_COORDINATES, MAP_ZOOM);
+  map.closePopup();
   resetMainMarker(addressElement);
 };
 

@@ -12,9 +12,9 @@ const enableOffer = (loadedSimilarOffers) => {
   enableFilter(loadedSimilarOffers);
 };
 
-const resetOffer = (addressElement) => {
+const resetOffer = (map, addressElement) => {
   resetForm();
-  resetMap(addressElement);
+  resetMap(map, addressElement);
   resetFilters();
 };
 

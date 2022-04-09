@@ -30,7 +30,7 @@ fetchSimilarOffers(
   }
 );
 
-resetBtn.addEventListener('click', () => resetOffer(addressElement));
+resetBtn.addEventListener('click', () => resetOffer(map, addressElement));
 
 setOfferFormSubmit(
   () => {

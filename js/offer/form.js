@@ -52,6 +52,8 @@ const enableForm = () => {
 
 const resetForm = () => {
   offerFormElement.reset();
+  sliderElement.noUiSlider.set(0);
+
   resetAvatar();
   resetPhotos();
 };
@@ -89,28 +91,22 @@ const setOfferFormSubmit = (onSuccess, onFail) => {
 };
 
 const validateLiving = () => LivingOption[roomNumberElement.value].includes(capacityElement.value);
-
 const getLivingErrorMessage = () => 'Неверное количество гостей';
-
 pristine.addValidator(roomNumberElement, validateLiving, getLivingErrorMessage);
-
 pristine.addValidator(capacityElement, validateLiving, getLivingErrorMessage);
 
+const validatePrice = () => priceElement.value >= TypePrice[typeElement.value];
+const getPriceErrorMessage = () => `Цена должна быть больше ${TypePrice[typeElement.value]}`;
+pristine.addValidator(priceElement, validatePrice, getPriceErrorMessage);
 typeElement.addEventListener('change', () => {
   priceElement.placeholder = TypePrice[typeElement.value];
   priceElement.min = TypePrice[typeElement.value];
+  pristine.validate(priceElement);
 });
-
-const validatePrice = () => priceElement.value >= TypePrice[typeElement.value];
-
-const getPriceErrorMessage = () => `Цена должна быть больше ${TypePrice[typeElement.value]}`;
-
-pristine.addValidator(priceElement, validatePrice, getPriceErrorMessage);
 
 timeInElement.addEventListener('change', () => {
   timeOutElement.value = timeInElement.value;
 });
-
 timeOutElement.addEventListener('change', () => {
   timeInElement.value = timeOutElement.value;
 });
@@ -136,9 +132,9 @@ noUiSlider.create(sliderElement, {
   },
 });
 
-sliderElement.noUiSlider.on('update', () => {
+sliderElement.noUiSlider.on('change', () => {
   priceElement.value = sliderElement.noUiSlider.get();
-  pristine.validate();
+  pristine.validate(priceElement);
 });
 
 priceElement.addEventListener('change', () => {
