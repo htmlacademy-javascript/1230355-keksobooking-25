@@ -3,7 +3,7 @@ const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const avatarChooserElement = document.querySelector('#avatar');
 const avatarPreviewElement = document.querySelector('.ad-form-header__preview img');
 const photosChooserElement = document.querySelector('#images');
-const photosPreviewContainer = document.querySelector('.ad-form__photo');
+const photosPreviewContainerElement = document.querySelector('.ad-form__photo');
 
 avatarChooserElement.addEventListener('change', () => {
   const file = avatarChooserElement.files[0];
@@ -29,14 +29,14 @@ photosChooserElement.addEventListener('change', () => {
       const photoPreviewElement = document.createElement('img');
       photoPreviewElement.src = URL.createObjectURL(file);
       photoPreviewElement.classList.add('preview-img');
-      photosPreviewContainer.append(photoPreviewElement);
+      photosPreviewContainerElement.append(photoPreviewElement);
     }
   });
 });
 
 const resetPhotos = () => {
   photosChooserElement.files.value = '';
-  photosPreviewContainer.textContent = '';
+  photosPreviewContainerElement.textContent = '';
 };
 
 export { resetAvatar, resetPhotos };

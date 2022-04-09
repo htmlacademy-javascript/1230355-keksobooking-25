@@ -22,12 +22,14 @@ const getRandomPositiveInteger = (a, b) => {
 const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
 
 const getRandomArrayFromDataSet = (dataSet) => {
-  const ARR = Array.from(dataSet);
-  const RESULT = new Array(getRandomPositiveInteger(0, ARR.length - 1));
-  for (let i = 0; i < RESULT.length; i++) {
-    RESULT[i] = ARR.splice(getRandomPositiveInteger(0, ARR.length - 1), 1);
+  const arr = Array.from(dataSet);
+  const result = new Array(getRandomPositiveInteger(0, arr.length - 1));
+  for (let i = 0; i < result.length; i++) {
+    result[i] = arr.splice(getRandomPositiveInteger(0, arr.length - 1), 1);
   }
-  return RESULT;
+  return result;
 };
 
-export { getRandomInteger, getRandomFloat, getRandomArrayElement, getRandomArrayFromDataSet };
+const isEscapeKey = (key) => key === 'Escape';
+
+export { getRandomInteger, getRandomFloat, getRandomArrayElement, getRandomArrayFromDataSet, isEscapeKey };

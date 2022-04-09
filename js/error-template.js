@@ -1,13 +1,14 @@
 const ERROR_SHOW_TIME = 3000;
-const renderErrorFullScreen = (msg) => {
-  const errorContainer = document.createElement('div');
-  errorContainer.classList.add('error-mess');
-  errorContainer.textContent = msg;
 
-  document.body.append(errorContainer);
+const renderErrorFullScreen = (msg) => {
+  const errorElement = document.createElement('div');
+  errorElement.classList.add('error-mess');
+  errorElement.textContent = msg;
+
+  document.body.append(errorElement);
 
   setTimeout(() => {
-    errorContainer.remove();
+    errorElement.remove();
   }, ERROR_SHOW_TIME);
 };
 

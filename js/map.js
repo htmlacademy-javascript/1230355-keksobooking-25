@@ -3,7 +3,7 @@ import { filterByAll, getSelectedFeatures } from './map-filter.js';
 
 const COORDINATE_PRESITION = 5;
 const MAP_ZOOM = 13;
-const DEFAULT_COORDINATES = {
+const DEFAULT_COORDINATE = {
   lat: 35.685,
   lng: 139.753
 };
@@ -16,7 +16,7 @@ const mainMarkerIcon = L.icon({
 });
 
 const mainMarker = L.marker(
-  DEFAULT_COORDINATES,
+  DEFAULT_COORDINATE,
   {
     draggable: true,
     icon: mainMarkerIcon,
@@ -34,18 +34,18 @@ const setAddress = (addressElement, location) => {
 };
 
 const createMap = (mapElementId, onLoad, addressElement) => {
-  const MAP = L.map(mapElementId)
+  const map = L.map(mapElementId)
     .on('load', () => onLoad())
-    .setView(DEFAULT_COORDINATES, MAP_ZOOM);
+    .setView(DEFAULT_COORDINATE, MAP_ZOOM);
 
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     },
-  ).addTo(MAP);
+  ).addTo(map);
 
-  mainMarker.addTo(MAP);
+  mainMarker.addTo(map);
 
   setAddress(addressElement, mainMarker.getLatLng());
 
@@ -53,7 +53,7 @@ const createMap = (mapElementId, onLoad, addressElement) => {
     setAddress(addressElement, evt.target.getLatLng());
   });
 
-  return MAP;
+  return map;
 };
 
 const addSimilarOffers = (layer, offerInfos) => {
@@ -77,12 +77,12 @@ const addSimilarOffers = (layer, offerInfos) => {
     });
 };
 const resetMainMarker = (addressElement) => {
-  mainMarker.setLatLng(DEFAULT_COORDINATES);
+  mainMarker.setLatLng(DEFAULT_COORDINATE);
   setAddress(addressElement, mainMarker.getLatLng());
 };
 
 const resetMap = (map, addressElement) => {
-  map.setView(DEFAULT_COORDINATES, MAP_ZOOM);
+  map.setView(DEFAULT_COORDINATE, MAP_ZOOM);
   map.closePopup();
   resetMainMarker(addressElement);
 };

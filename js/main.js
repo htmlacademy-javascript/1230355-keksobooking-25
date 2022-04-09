@@ -1,11 +1,11 @@
 import { disableOffer, enableOffer, resetOffer } from './offer.js';
-import { resetBtn, setOfferFormSubmit } from './offer/form.js';
+import { resetBtnElement, setOfferFormSubmit } from './offer/form.js';
 import { createMap, addSimilarOffers } from './map.js';
-import { successPopup, errorPopup } from './user-modal.js';
+import { showSuccessPopup, showErrorPopup } from './user-modal.js';
 import { fetchSimilarOffers } from './api.js';
 import { renderErrorFullScreen } from './error-template.js';
 import { debounce } from './debounce.js';
-import { disableFilter, enableFilter, setFilterChange } from './map-filter.js';
+import { disableFilters, enableFilters, setFilterChange } from './map-filter.js';
 
 const addressElement = document.querySelector('#address');
 
@@ -21,19 +21,19 @@ fetchSimilarOffers(
     loadedSimilarOffers = true;
     setFilterChange(debounce(
       () => addSimilarOffers(similarMarkerLayer, data)));
-    enableFilter(loadedSimilarOffers);
+    enableFilters(loadedSimilarOffers);
   },
   () => {
     renderErrorFullScreen('Ошибка загрузки данных с сервера');
     loadedSimilarOffers = false;
-    disableFilter();
+    disableFilters();
   }
 );
 
-resetBtn.addEventListener('click', () => resetOffer(map, addressElement));
+resetBtnElement.addEventListener('click', () => resetOffer(map, addressElement));
 
 setOfferFormSubmit(
   () => {
     resetOffer(map, addressElement);
-    successPopup();
-  }, errorPopup);
+    showSuccessPopup();
+  }, showErrorPopup);

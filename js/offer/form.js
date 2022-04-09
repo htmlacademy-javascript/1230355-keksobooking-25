@@ -1,7 +1,7 @@
 import { sendOffer } from '../api.js';
 import { resetAvatar, resetPhotos } from './photo-loader.js';
 
-const TypePrice = {
+const typePrice = {
   bungalow: 0,
   flat: 1000,
   hotel: 3000,
@@ -9,7 +9,7 @@ const TypePrice = {
   palace: 10000
 };
 
-const LivingOption = {
+const livingOption = {
   '1': ['1'],
   '2': ['2', '1'],
   '3': ['3', '2', '1'],
@@ -17,7 +17,7 @@ const LivingOption = {
 };
 
 const offerFormElement = document.querySelector('.ad-form');
-const offerFormFieldSets = offerFormElement.querySelectorAll('fieldset');
+const offerFormFieldsetElements = offerFormElement.querySelectorAll('fieldset');
 const roomNumberElement = offerFormElement.querySelector('#room_number');
 const capacityElement = offerFormElement.querySelector('#capacity');
 const typeElement = offerFormElement.querySelector('#type');
@@ -25,8 +25,8 @@ const priceElement = offerFormElement.querySelector('#price');
 const timeInElement = offerFormElement.querySelector('#timein');
 const timeOutElement = offerFormElement.querySelector('#timeout');
 const sliderElement = offerFormElement.querySelector('.ad-form__slider');
-const submitButton = offerFormElement.querySelector('.ad-form__submit');
-const resetBtn = offerFormElement.querySelector('.ad-form__reset');
+const submitButtonElement = offerFormElement.querySelector('.ad-form__submit');
+const resetBtnElement = offerFormElement.querySelector('.ad-form__reset');
 
 const pristine = new window.Pristine(offerFormElement, {
   classTo: 'ad-form__element-req',
@@ -39,33 +39,32 @@ const pristine = new window.Pristine(offerFormElement, {
 
 const disableForm = () => {
   offerFormElement.classList.add('ad-form--disabled');
-  offerFormFieldSets.forEach((el) => el.setAttribute('disabled', ''));
+  offerFormFieldsetElements.forEach((el) => el.setAttribute('disabled', ''));
 
   sliderElement.setAttribute('disabled', '');
 };
 
 const enableForm = () => {
   offerFormElement.classList.remove('ad-form--disabled');
-  offerFormFieldSets.forEach((el) => el.removeAttribute('disabled'));
+  offerFormFieldsetElements.forEach((el) => el.removeAttribute('disabled'));
   sliderElement.removeAttribute('disabled');
 };
 
 const resetForm = () => {
   offerFormElement.reset();
   sliderElement.noUiSlider.set(0);
-
   resetAvatar();
   resetPhotos();
 };
 
 const blockSubmitButton = () => {
-  submitButton.disabled = true;
-  submitButton.textContent = 'Публикую...';
+  submitButtonElement.disabled = true;
+  submitButtonElement.textContent = 'Публикую...';
 };
 
 const unblockSubmitButton = () => {
-  submitButton.disabled = false;
-  submitButton.textContent = 'Опубликовать';
+  submitButtonElement.disabled = false;
+  submitButtonElement.textContent = 'Опубликовать';
 };
 
 const setOfferFormSubmit = (onSuccess, onFail) => {
@@ -90,19 +89,19 @@ const setOfferFormSubmit = (onSuccess, onFail) => {
   });
 };
 
-const validateLiving = () => LivingOption[roomNumberElement.value].includes(capacityElement.value);
+const validateLiving = () => livingOption[roomNumberElement.value].includes(capacityElement.value);
 const getLivingErrorMessage = () => 'Неверное количество гостей';
 pristine.addValidator(capacityElement, validateLiving, getLivingErrorMessage);
 roomNumberElement.addEventListener('change', () => {
   pristine.validate(capacityElement);
 });
 
-const validatePrice = () => priceElement.value >= TypePrice[typeElement.value];
-const getPriceErrorMessage = () => `Цена должна быть больше ${TypePrice[typeElement.value]}`;
+const validatePrice = () => priceElement.value >= typePrice[typeElement.value];
+const getPriceErrorMessage = () => `Цена должна быть больше ${typePrice[typeElement.value]}`;
 pristine.addValidator(priceElement, validatePrice, getPriceErrorMessage);
 typeElement.addEventListener('change', () => {
-  priceElement.placeholder = TypePrice[typeElement.value];
-  priceElement.min = TypePrice[typeElement.value];
+  priceElement.placeholder = typePrice[typeElement.value];
+  priceElement.min = typePrice[typeElement.value];
   pristine.validate(priceElement);
 });
 
@@ -143,4 +142,4 @@ priceElement.addEventListener('change', () => {
   sliderElement.noUiSlider.set(priceElement.value);
 });
 
-export { disableForm, enableForm, setOfferFormSubmit, resetForm, resetBtn };
+export { disableForm, enableForm, setOfferFormSubmit, resetForm, resetBtnElement };
