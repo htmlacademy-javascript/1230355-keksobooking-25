@@ -34,6 +34,6 @@ resetBtn.addEventListener('click', () => resetOffer(map, addressElement));
 
 setOfferFormSubmit(
   () => {
-    resetOffer(addressElement);
+    resetOffer(map, addressElement);
     successPopup();
   }, errorPopup);
