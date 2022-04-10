@@ -1,5 +1,6 @@
-import { disableFilter, enableFilter } from './map-filter.js';
-import { disableForm, enableForm } from './form.js';
+import { disableFilter, enableFilter, resetFilters } from './map-filter.js';
+import { resetMap } from './map.js';
+import { disableForm, enableForm, resetForm } from './offer/form.js';
 
 const disableOffer = () => {
   disableForm();
@@ -11,4 +12,10 @@ const enableOffer = (loadedSimilarOffers) => {
   enableFilter(loadedSimilarOffers);
 };
 
-export {disableOffer, enableOffer};
+const resetOffer = (addressElement) => {
+  resetForm();
+  resetMap(addressElement);
+  resetFilters();
+};
+
+export { disableOffer, enableOffer, resetOffer };

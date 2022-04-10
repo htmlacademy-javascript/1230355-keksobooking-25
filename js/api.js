@@ -1,4 +1,3 @@
-import { resetForm } from './form.js';
 
 const fetchSimilarOffers = (onSuccess, onFail) => {
   fetch('https://25.javascript.pages.academy/keksobooking/data')
@@ -20,7 +19,6 @@ const sendOffer = (onSuccess, onFail, body) => {
     .then((response) => {
       if (response.ok) {
         onSuccess();
-        resetForm();
       } else {
         onFail('Не удалось отправить форму. Попробуйте ещё раз');
       }
@@ -30,4 +28,4 @@ const sendOffer = (onSuccess, onFail, body) => {
     });
 };
 
-export {fetchSimilarOffers, sendOffer};
+export { fetchSimilarOffers, sendOffer };
