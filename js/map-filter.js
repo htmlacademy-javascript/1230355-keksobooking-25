@@ -1,39 +1,38 @@
-const housingTypeElement = document.querySelector('#housing-type');
-const housingPriceElement = document.querySelector('#housing-price');
-const housingRoomsElement = document.querySelector('#housing-rooms');
-const housingGuestsElement = document.querySelector('#housing-guests');
-const housingFeaturesElement = document.querySelector('#housing-features');
-const housingFeaturesCheckBoxes = housingFeaturesElement.querySelectorAll('.map__checkbox');
-const housingMapFilters = document.querySelector('.map__filters');
-const housingMapFilterSelects = housingMapFilters.querySelectorAll('select');
-const housingMapFiltersFieldset = housingMapFilters.querySelector('#housing-features');
+const housingMapFiltersElement = document.querySelector('.map__filters');
+const housingTypeElement = housingMapFiltersElement.querySelector('#housing-type');
+const housingPriceElement = housingMapFiltersElement.querySelector('#housing-price');
+const housingRoomsElement = housingMapFiltersElement.querySelector('#housing-rooms');
+const housingGuestsElement = housingMapFiltersElement.querySelector('#housing-guests');
+const housingFeaturesElement = housingMapFiltersElement.querySelector('#housing-features');
+const featuresElements = housingFeaturesElement.querySelectorAll('.map__checkbox');
+const housingMapFilterSelectElements = housingMapFiltersElement.querySelectorAll('select');
+const housingMapFilterFieldsetElement = housingMapFiltersElement.querySelector('#housing-features');
 
-export const disableFilter = () => {
-  housingMapFilters.classList.add('map__filters--disabled');
-  housingMapFilterSelects.forEach((el) => el.setAttribute('disabled', ''));
-  housingMapFiltersFieldset.setAttribute('disabled', '');
+export const disableFilters = () => {
+  housingMapFiltersElement.classList.add('map__filters--disabled');
+  housingMapFilterSelectElements.forEach((el) => el.setAttribute('disabled', ''));
+  housingMapFilterFieldsetElement.setAttribute('disabled', '');
 };
 
-export const enableFilter = (loadedSimilarOffers) => {
+export const enableFilters = (loadedSimilarOffers) => {
   if (loadedSimilarOffers) {
-    housingMapFilters.classList.remove('map__filters--disabled');
-    housingMapFilterSelects.forEach((el) => el.removeAttribute('disabled'));
-    housingMapFiltersFieldset.removeAttribute('disabled');
+    housingMapFiltersElement.classList.remove('map__filters--disabled');
+    housingMapFilterSelectElements.forEach((el) => el.removeAttribute('disabled'));
+    housingMapFilterFieldsetElement.removeAttribute('disabled');
   }
 };
 
 export const resetFilters = () => {
-  housingMapFilterSelects.forEach((el) => {
+  housingMapFilterSelectElements.forEach((el) => {
     el.value = 'any';
   });
-  const features = housingMapFiltersFieldset.querySelectorAll('[name="features"]');
-  features.forEach((el) => {
+  featuresElements.forEach((el) => {
     el.checked = false;
   });
 };
 
 export const setFilterChange = (action) => {
-  [...housingMapFilters.children].forEach((filterElement) => filterElement.addEventListener('change', () => action()));
+  [...housingMapFiltersElement.children].forEach((filterElement) => filterElement.addEventListener('change', () => action()));
 };
 
 export const filterByType = (currentType) => housingTypeElement.value === 'any' || currentType === housingTypeElement.value;
@@ -90,7 +89,7 @@ export const filterByFeatures = (currentFeatures, selectedFeatures) => {
 
 export const getSelectedFeatures = () => {
   const selectedFeatures = [];
-  housingFeaturesCheckBoxes.forEach((housingFeaterCheckBox) => {
+  featuresElements.forEach((housingFeaterCheckBox) => {
     if (housingFeaterCheckBox.checked) {
       selectedFeatures.push(housingFeaterCheckBox.value);
     }

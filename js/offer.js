@@ -1,20 +1,20 @@
-import { disableFilter, enableFilter, resetFilters } from './map-filter.js';
+import { disableFilters, enableFilters, resetFilters } from './map-filter.js';
 import { resetMap } from './map.js';
 import { disableForm, enableForm, resetForm } from './offer/form.js';
 
 const disableOffer = () => {
   disableForm();
-  disableFilter();
+  disableFilters();
 };
 
 const enableOffer = (loadedSimilarOffers) => {
   enableForm();
-  enableFilter(loadedSimilarOffers);
+  enableFilters(loadedSimilarOffers);
 };
 
-const resetOffer = (addressElement) => {
+const resetOffer = (map, addressElement) => {
   resetForm();
-  resetMap(addressElement);
+  resetMap(map, addressElement);
   resetFilters();
 };
 
