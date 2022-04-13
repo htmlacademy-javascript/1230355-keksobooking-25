@@ -58,12 +58,12 @@ const resetForm = () => {
 };
 
 const blockSubmitButton = () => {
-  submitButtonElement.disabled = true;
+  submitButtonElement.setAttribute('disabled', '');
   submitButtonElement.textContent = 'Публикую...';
 };
 
 const unblockSubmitButton = () => {
-  submitButtonElement.disabled = false;
+  submitButtonElement.removeAttribute('disabled');
   submitButtonElement.textContent = 'Опубликовать';
 };
 
