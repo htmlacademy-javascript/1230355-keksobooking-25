@@ -1,3 +1,7 @@
+const PriceThreshold = {
+  LOW: 10000,
+  HIGH: 50000
+};
 const housingMapFiltersElement = document.querySelector('.map__filters');
 const housingTypeElement = housingMapFiltersElement.querySelector('#housing-type');
 const housingPriceElement = housingMapFiltersElement.querySelector('#housing-price');
@@ -29,6 +33,8 @@ export const resetFilters = () => {
   featuresElements.forEach((el) => {
     el.checked = false;
   });
+  const evt = new Event('change');
+  housingTypeElement.dispatchEvent(evt);
 };
 
 export const setFilterChange = (action) => {
@@ -42,11 +48,11 @@ export const filterByPrice = (currentPrice) => {
     case 'any':
       return true;
     case 'middle':
-      return currentPrice >= 10000 && currentPrice <= 50000;
+      return currentPrice >= PriceThreshold.LOW && currentPrice <= PriceThreshold.HIGH;
     case 'low':
-      return currentPrice < 10000;
+      return currentPrice < PriceThreshold.LOW;
     case 'high':
-      return currentPrice > 50000;
+      return currentPrice > PriceThreshold.HIGH;
   }
 };
 
